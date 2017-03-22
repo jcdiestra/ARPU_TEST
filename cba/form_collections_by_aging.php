@@ -2,7 +2,7 @@
 <html lang="en">
 <?php /// INCLUDE STYLE, HEAD, NAVBAR, <body>
 include 'head_navbar.php';
-//include '../site_dao_vivo_kantoo.php';
+//include '/site_dao_vivo_kantoo.php';
 include 'side_bar.php'; ?>
 
 
