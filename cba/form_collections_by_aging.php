@@ -3,7 +3,7 @@
 <?php /// INCLUDE STYLE, HEAD, NAVBAR, <body>
 include 'head_navbar.php';
 //include '../site_dao_vivo_kantoo.php';
-include 'side_bar.php'; ?>
+include '../side_bar.php'; ?>
 
 
             <div class="col-sm-9">
