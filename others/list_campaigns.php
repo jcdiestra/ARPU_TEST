@@ -17,13 +17,13 @@ include 'head_navbar.php';?>
 
 
 	<div class="container">
-		<table id='myTable' class="table table-striped table-responsive table-condensed"> 
+		<table id='myTable' class="display table table-bordered table-striped" style="font-size: 12px;"> 
 			<thead> 
 				<tr>
 
 
 					<?php				for ($i=0; $i < $numfields; $i++) // Header
-							echo "<th class='header'>".mysql_field_name($result, $i)."</th>"; 
+							echo "<th>".mysql_field_name($result, $i)."</th>"; 
 
 		?>
 				</tr>
@@ -68,13 +68,17 @@ include 'head_navbar.php';?>
 						<script src="/bootstrap/js/bootstrap.min.js"/></script>
 						<script src="/bootstrap/js/bootstrap-select.js"/></script>
 						<script src="/jquery_sorter/jquery.tablesorter.widgets.js"/></script>
+						<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>  
+      					<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
 						<script>
 $(document).ready(function() 
-			{	$("#myTable").tablesorter({ 
-        // sort on the first column
-			sortList: [[0,1]] ,
-
-									});	
+			{	
+				$("#myTable").DataTable({
+					"bPaginate": false,
+			        "bFilter": false,
+			        "bInfo": false,
+			        fixedHeader: true
+				});
 	
 			} 
 		);  

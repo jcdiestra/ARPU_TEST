@@ -5,10 +5,28 @@ include 'head_navbar.php';?>
 
 <div class="container">
 	<div class="starter">
-		<h1>La Mark - Arpu Report</h1>	
-		<h2>
+		<h2>Arpu Report - <?php 
+		switch ($report_type) {
+		    case 'summary':
+		        echo "Summary";
+		        break;
+	    	case 'cancellation':
+		        echo "% New User Cancellation";
+		        break;
+		    case 'collectionrate':
+		        echo "Collection Rate";
+		        break;
+		    case 'arpu':
+		        echo "ARPU (ROI)";
+		        break;
+		    case 'arpuroi':
+		        echo "ARPU (ROI-NET)";
+		        break;
+		}
+		?> </h2>	
+		<h3>
 			<?php echo $country_name ?>
-		</h2>
+		</h3>
 
 		<!--/<div id="container" style="width:100%; height:400px;"></div>		
 		</div>    This was used for the chart-->
@@ -17,10 +35,61 @@ include 'head_navbar.php';?>
 
 
 	<div class="container">
-		<table id='myTable' class="table table-striped table-responsive table-condensed"> 
+		<table id='myTable' class="display table table-striped table-bordered" style="font-size: 12px;"> 
 			<thead> 
+				<?php 
+				if($report_type!='summary'){
+			echo '<tr>
+					<th colspan='; 
+		switch ($report_type) {
+		    case 'summary':
+		        echo "3";
+		        break;
+	    	case 'cancellation':
+		        echo "4";
+		        break;
+		    case 'collectionrate':
+		        echo "3";
+		        break;
+		    case 'arpu':
+		        echo "3";
+		        break;
+		    case 'arpuroi':
+		        echo "3";
+		        break;
+		}
+		echo '></th>
+				<th class="text-center" colspan=';
+				for ($i=0; $i < $numfields; $i++){
+					if($i==2)
+					{
+						$resta = $numfields-$i;
+						echo $resta;
+					}
+				}
+				echo '>'; 
+		switch ($report_type) {
+		    case 'summary':
+		        echo "Summary";
+		        break;
+	    	case 'cancellation':
+		        echo "% New User Cancellation by days bracket";
+		        break;
+		    case 'collectionrate':
+		        echo "% Collection Rate Accumulate by days bracket";
+		        break;
+		    case 'arpu':
+		        echo "Average Revenue Per User by days bracket";
+		        break;
+		    case 'arpuroi':
+		        echo "Average Revenue Per User Net by days bracket";
+		        break;
+		};
+		echo '</th>	
+			</tr>';
+				};
+			?>
 				<tr>
-
 
 					<?php				for ($i=0; $i < $numfields; $i++) // Header
 							echo "<th class='header'>".mysql_field_name($result, $i)."</th>"; 
@@ -59,7 +128,6 @@ include 'head_navbar.php';?>
 			
 			<div class="container">
 	<div class="starter">
-		<h1>La Mark - Arpu Report</h1>	
 		<h2>
 			<?php echo $country_name_2 ?>
 		</h2>
@@ -71,13 +139,64 @@ include 'head_navbar.php';?>
 
 
 	<div class="container">
-		<table id='myTable_2' class="table table-striped table-responsive table-condensed"> 
+		<table id='myTable_2' class="display table table-striped table-bordered" style="font-size: 12px;"> 
 			<thead> 
+				<?php 
+				if($report_type!='summary'){
+			echo '<tr>
+					<th colspan='; 
+		switch ($report_type) {
+		    case 'summary':
+		        echo "3";
+		        break;
+	    	case 'cancellation':
+		        echo "4";
+		        break;
+		    case 'collectionrate':
+		        echo "3";
+		        break;
+		    case 'arpu':
+		        echo "3";
+		        break;
+		    case 'arpuroi':
+		        echo "3";
+		        break;
+		}
+		echo '></th>
+				<th class="text-center" colspan=';
+				for ($i=0; $i < $numfields; $i++){
+					if($i==2)
+					{
+						$resta = $numfields-$i;
+						echo $resta;
+					}
+				}
+				echo '>'; 
+		switch ($report_type) {
+		    case 'summary':
+		        echo "Summary";
+		        break;
+	    	case 'cancellation':
+		        echo "% New User Cancellation by days bracket";
+		        break;
+		    case 'collectionrate':
+		        echo "% Collection Rate Accumulate by days bracket";
+		        break;
+		    case 'arpu':
+		        echo "Average Revenue Per User by days bracket";
+		        break;
+		    case 'arpuroi':
+		        echo "Average Revenue Per User Net by days bracket";
+		        break;
+		};
+		echo '</th>	
+			</tr>';
+				};
+			?>
 				<tr>
 
-
-					<?php				for ($i=0; $i < $numfields_2; $i++) // Header
-							echo "<th class='header'>".mysql_field_name($result_2, $i)."</th>"; 
+					<?php				for ($i=0; $i < $numfields; $i++) // Header
+							echo "<th class='header'>".mysql_field_name($result, $i)."</th>"; 
 
 		?>
 				</tr>
@@ -122,15 +241,22 @@ include 'head_navbar.php';?>
 						<script src="../bootstrap/js/bootstrap.min.js"/></script>
 						<script src="../bootstrap/js/bootstrap-select.js"/></script>
 						<script src="../jquery_sorter/jquery.tablesorter.widgets.js"/></script>
+						<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>  
+      					<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
 						<script>
 $(document).ready(function() 
-			{	$("#myTable").tablesorter({ 
-        // sort on the first column
-			sortList: [[0,0]] ,
-
-									});	
-	
-			} 
+			{	$("#myTable").DataTable({
+					"bPaginate": false,
+			        "bFilter": false,
+			        "bInfo": false,
+			        fixedHeader: true
+				});
+				$("#myTable_2").DataTable({
+					"bPaginate": false,
+			        "bFilter": false,
+			        "bInfo": false,
+			        fixedHeader: true
+				});
 		);  
 
 		

@@ -5,10 +5,10 @@ include 'head_navbar.php';
 
 <div class="container">
 	<div class="starter">
-		<h1>Arpu Report - <?php echo $operator ?></h1>	
-		<h2>
+		<h2>Collections by Agings - <?php echo $operator ?></h2>	
+		<h3>
 			<?php echo $country ?>
-		</h2>
+		</h3>
 
 		<!--/<div id="container" style="width:100%; height:400px;"></div>		
 		</div>    This was used for the chart-->
@@ -16,13 +16,13 @@ include 'head_navbar.php';
 	</div>
 
 
-	<div class="container">
-		<table id='myTable' class="table table-striped"> 
+	<div class="container" style="zoom: 1; overflow: auto;">
+		<table id='myTable' class="display table table-bordered table-striped" style="font-size: 12px;"> 
 			<thead> 
 				<tr>
 				
 					<?php				for ($i=0; $i < $numfields; $i++) // Header
-							echo "<th class='header'>".mysql_field_name($result, $i)."</th>"; 
+							echo "<th>".mysql_field_name($result, $i)."</th>"; 
 
 		?>
 				</tr>
@@ -41,17 +41,19 @@ include 'head_navbar.php';
 			</tbody>
 		</table>
 
-		<div class="col-xs-5 col-xs-offset-3">
+		
+</div>
+<div class="col-xs-5 col-xs-offset-3">
+				<br>
+				</div>
+
+<div class="col-xs-5">
 			<button class="btn btn-success" id='1'>Export to Excel</button>
 			<br>
 			</div>
 
-			<div class="col-xs-5 col-xs-offset-3">
-				<br>
-				</div>
-
+			
 			</div>
-
 
 
 
@@ -72,13 +74,17 @@ include 'head_navbar.php';
 						<script src="../bootstrap/js/bootstrap.min.js"/></script>
 						<script src="../bootstrap/js/bootstrap-select.js"/></script>
 						<script src="../jquery_sorter/jquery.tablesorter.widgets.js"/></script>
+						<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>  
+      					<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
 						<script>
 $(document).ready(function() 
-			{	$("#myTable").tablesorter({ 
-        // sort on the first column
-			sortList: [[0,1]] ,
-
-									});	
+			{	
+				$("#myTable").DataTable({
+					"bPaginate": false,
+			        "bFilter": false,
+			        "bInfo": false,
+			        fixedHeader: true
+				});
 	
 			} 
 		);  

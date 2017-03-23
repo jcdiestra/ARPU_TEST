@@ -5,7 +5,7 @@ include 'head_navbar.php';?>
 
 <div class="container">
 	<div class="starter">
-		<h1>Arpu Report  - <?php 
+		<h2>Arpu Report - <?php 
 		switch ($report_type) {
 		    case 'summary':
 		        echo "Summary";
@@ -23,25 +23,115 @@ include 'head_navbar.php';?>
 		        echo "ARPU (ROI-NET)";
 		        break;
 		}
-		?> </h1>	
-		<h2>
+		?> </h2>	
+		<h3>
 			<?php echo $country_name ?>
-		</h2>
+		</h3>
 
 		<!--/<div id="container" style="width:100%; height:400px;"></div>		
 		</div>    This was used for the chart-->
+<div class="container">
+			<form action="form_vivo_kantoo_campaign_result.php" method="post" id='summary'>
+    <input type="hidden" name="report" value="summary" />
+    <input type="hidden" name="campaign_id" value="<?php echo $campaign_id ?>" />
+  </form>
 
+  <form action="form_vivo_kantoo_campaign_result.php" method="post" id='cancellation'>
+    <input type="hidden" name="report" value="cancellation" />
+    <input type="hidden" name="campaign_id" value="<?php echo $campaign_id ?>" />
+  </form>
+
+  <form action="form_vivo_kantoo_campaign_result.php" method="post" id='collectionrate'>
+    <input type="hidden" name="report" value="collectionrate" />
+    <input type="hidden" name="campaign_id" value="<?php echo $campaign_id ?>" />
+  </form>
+
+  <form action="form_vivo_kantoo_campaign_result.php" method="post" id='arpu'>
+    <input type="hidden" name="report" value="arpu" />
+    <input type="hidden" name="campaign_id" value="<?php echo $campaign_id ?>" />
+  </form>
+
+  <form action="form_vivo_kantoo_campaign_result.php" method="post" id='arpuroi'>
+    <input type="hidden" name="report" value="arpuroi" />
+    <input type="hidden" name="campaign_id" value="<?php echo $campaign_id ?>" />
+  </form>
+  
+
+  <ul class="nav nav-tabs nav-justified"> 
+  <li <?php if ($report_type=='summary') {
+   echo "class='active'";} ?> ><a href="javascript:{}" onclick="document.getElementById('summary').submit(); return false;">Summary</a></li>
+   <li <?php if ($report_type=='cancellation') {
+   echo "class='active'";} ?> ><a href="javascript:{}" onclick="document.getElementById('cancellation').submit(); return false;" data-toggle="tab">%NewUser Cancellation</a></li> 
+   <li <?php if ($report_type=='collectionrate') {
+   echo "class='active'";} ?> ><a data-toggle="tab" href="javascript:{}" onclick="document.getElementById('collectionrate').submit(); return false;">Collection Rate</a></li>
+   <li <?php if ($report_type=='arpu') {
+   echo "class='active'";} ?> ><a data-toggle="tab" href="javascript:{}" onclick="document.getElementById('arpu').submit(); return false;">ARPU (ROI)</a></li>
+   <li <?php if ($report_type=='arpuroi') {
+   echo "class='active'";} ?> ><a data-toggle="tab" href="javascript:{}" onclick="document.getElementById('arpuroi').submit(); return false;">ARPU (ROI-NET)</a></li>
+    </ul>
+		</div>
 	</div>
 
 
 	<div class="container">
-		<table id='myTable' class="table table-striped table-responsive table-condensed"> 
+		<table id='myTable' class="display table table-bordered table-striped" style="font-size: 12px;"> 
 			<thead> 
+				<?php 
+				if($report_type!='summary'){
+			echo '<tr>
+					<th colspan='; 
+		switch ($report_type) {
+		    case 'summary':
+		        echo "3";
+		        break;
+	    	case 'cancellation':
+		        echo "4";
+		        break;
+		    case 'collectionrate':
+		        echo "3";
+		        break;
+		    case 'arpu':
+		        echo "3";
+		        break;
+		    case 'arpuroi':
+		        echo "3";
+		        break;
+		}
+		echo '></th>
+				<th class="text-center" colspan=';
+				for ($i=0; $i < $numfields; $i++){
+					if($i==2)
+					{
+						$resta = $numfields-$i;
+						echo $resta;
+					}
+				}
+				echo '>'; 
+		switch ($report_type) {
+		    case 'summary':
+		        echo "Summary";
+		        break;
+	    	case 'cancellation':
+		        echo "% New User Cancellation by days bracket";
+		        break;
+		    case 'collectionrate':
+		        echo "% Collection Rate Accumulate by days bracket";
+		        break;
+		    case 'arpu':
+		        echo "Average Revenue Per User by days bracket";
+		        break;
+		    case 'arpuroi':
+		        echo "Average Revenue Per User Net by days bracket";
+		        break;
+		};
+		echo '</th>	
+			</tr>';
+				};
+			?>
 				<tr>
 
-
 					<?php				for ($i=0; $i < $numfields; $i++) // Header
-							echo "<th class='header'>".mysql_field_name($result, $i)."</th>"; 
+							echo "<th>".mysql_field_name($result, $i)."</th>"; 
 
 		?>
 				</tr>
@@ -86,14 +176,17 @@ include 'head_navbar.php';?>
 						<script src="../bootstrap/js/bootstrap.min.js"/></script>
 						<script src="../bootstrap/js/bootstrap-select.js"/></script>
 						<script src="../jquery_sorter/jquery.tablesorter.widgets.js"/></script>
+						<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>  
+      					<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
 						<script>
 $(document).ready(function() 
-			{	$("#myTable").tablesorter({ 
-        // sort on the first column
-			sortList: [[0,0]] ,
-
-									});	
-	
+			{	
+				$("#myTable").DataTable({
+					"bPaginate": false,
+			        "bFilter": false,
+			        "bInfo": false,
+			        fixedHeader: true
+				});
 			} 
 		);  
 
