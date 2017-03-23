@@ -72,7 +72,7 @@ include 'head_navbar.php';?>
 $(document).ready(function() 
 			{	$("#myTable").tablesorter({ 
         // sort on the first column
-			sortList: [[0,1]] ,
+			sortList: [[0,0]] ,
 
 									});	
 	
