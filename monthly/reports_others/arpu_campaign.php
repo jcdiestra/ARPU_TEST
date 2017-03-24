@@ -3,8 +3,13 @@
 include 'head_navbar.php';?>
 
 
+
 <div class="container">
 	<div class="starter">
+
+		<div class='row'>
+
+		<div class='col-md-8 col-md-offset-2'>
 		<h2>Arpu Report - <?php 
 		switch ($report_type) {
 		    case 'summary':
@@ -23,10 +28,18 @@ include 'head_navbar.php';?>
 		        echo "ARPU (ROI-NET)";
 		        break;
 		}
-		?> </h2>	
-		<h3>
-			<?php echo $country_name ?>
-		</h3>
+		?> </h2>
+</div></div>
+		
+		<div class='row'>
+			<div class='col-md-8 col-md-offset-2'>
+			<h3>
+				<?php echo $country_name ?></h3>
+			</div>
+			<div class='col-md-2'>
+			<a href='form_others_campaign.php' class="btn btn-primary btn-xs">Back to Reports</a>
+			</div>
+		</div>
 
 		<!--/<div id="container" style="width:100%; height:400px;"></div>		
 		</div>    This was used for the chart-->
