@@ -45,6 +45,51 @@ include 'head_navbar.php';?>
 
 	</div>
 
+<div class="container">
+			<form action="form_vivo_kantoo_2_campaigns_result.php" method="post" id='summary'>
+    <input type="hidden" name="report" value="summary" />
+    <input type="hidden" name="campaign_id" value="<?php echo $campaign_id ?>" />
+    <input type="hidden" name="campaign_id_2" value="<?php echo $campaign_id_2 ?>" />
+  </form>
+
+  <form action="form_vivo_kantoo_2_campaigns_result.php" method="post" id='cancellation'>
+    <input type="hidden" name="report" value="cancellation" />
+    <input type="hidden" name="campaign_id" value="<?php echo $campaign_id ?>" />
+    <input type="hidden" name="campaign_id_2" value="<?php echo $campaign_id_2 ?>" />
+  </form>
+
+  <form action="form_vivo_kantoo_2_campaigns_result.php" method="post" id='collectionrate'>
+    <input type="hidden" name="report" value="collectionrate" />
+    <input type="hidden" name="campaign_id" value="<?php echo $campaign_id ?>" />
+    <input type="hidden" name="campaign_id_2" value="<?php echo $campaign_id_2 ?>" />
+  </form>
+
+  <form action="form_vivo_kantoo_2_campaigns_result.php" method="post" id='arpu'>
+    <input type="hidden" name="report" value="arpu" />
+    <input type="hidden" name="campaign_id" value="<?php echo $campaign_id ?>" />
+    <input type="hidden" name="campaign_id_2" value="<?php echo $campaign_id_2 ?>" />
+  </form>
+
+  <form action="form_vivo_kantoo_2_campaigns_result.php" method="post" id='arpuroi'>
+    <input type="hidden" name="report" value="arpuroi" />
+    <input type="hidden" name="campaign_id" value="<?php echo $campaign_id ?>" />
+    <input type="hidden" name="campaign_id_2" value="<?php echo $campaign_id_2 ?>" />
+  </form>
+  
+
+  <ul class="nav nav-tabs nav-justified"> 
+  <li <?php if ($report_type=='summary') {
+   echo "class='active'";} ?> ><a href="javascript:{}" onclick="document.getElementById('summary').submit(); return false;">Summary</a></li>
+   <li <?php if ($report_type=='cancellation') {
+   echo "class='active'";} ?> ><a href="javascript:{}" onclick="document.getElementById('cancellation').submit(); return false;" data-toggle="tab">%NewUser Cancellation</a></li> 
+   <li <?php if ($report_type=='collectionrate') {
+   echo "class='active'";} ?> ><a data-toggle="tab" href="javascript:{}" onclick="document.getElementById('collectionrate').submit(); return false;">Collection Rate</a></li>
+   <li <?php if ($report_type=='arpu') {
+   echo "class='active'";} ?> ><a data-toggle="tab" href="javascript:{}" onclick="document.getElementById('arpu').submit(); return false;">ARPU (ROI)</a></li>
+   <li <?php if ($report_type=='arpuroi') {
+   echo "class='active'";} ?> ><a data-toggle="tab" href="javascript:{}" onclick="document.getElementById('arpuroi').submit(); return false;">ARPU (ROI-NET)</a></li>
+    </ul>
+		</div>
 
 	<div class="container">
 		<table id='myTable' class="display table table-striped table-bordered" style="font-size: 12px;"> 
@@ -140,9 +185,9 @@ include 'head_navbar.php';?>
 
 			<div class="container">
 				<div class="starter">
-					<h2>
+					<h3>
 						<?php echo $country_name_2 ?>
-					</h2>
+					</h3>
 
 					<!--/<div id="container" style="width:100%; height:400px;"></div>		
 		</div>    This was used for the chart-->

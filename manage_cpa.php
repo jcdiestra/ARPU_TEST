@@ -1,7 +1,11 @@
 
  <!DOCTYPE html>  
 <?php
-include 'head_navbar2.php';
+  session_start();
+  if(!isset($_SESSION['logg']) || $_SESSION['logg'] == false){
+    header("Location: login.php");
+  }
+include 'head_navbar.php';
 include 'site_all_dao.php';
 //include 'cpa_weekly_dao.php';
 
@@ -61,41 +65,42 @@ if($count == 0){
 <div class="col-md-12 text-center">
   <h1>MANAGEMENT - CPA WEEKLY</h1>
 </div>
+
 <div class="col-md-12">
 <div class="col-md-4"></div>
 <div class="col-md-4">
-<div><?php switch ($rsp) {
-  case 1:
-    echo '<h4 style="font-size: 10px; color: green;">* CPA inserted correctly';
-    break;
-  case -1:
-    echo '<h4 style="font-size: 10px; color: red;"> CPA already exists';
-    break;
-  case '':
-    echo '<h4>';
-    break;
-}; ?></h4></div>
-  <form action="manage_cpa.php" method="post">
+  <div><?php switch ($rsp) {
+    case 1:
+      echo '<h4 style="font-size: 10px; color: green;">* CPA inserted correctly';
+      break;
+    case -1:
+      echo '<h4 style="font-size: 10px; color: red;"> CPA already exists';
+      break;
+    case '':
+      echo '<h4>';
+      break;
+  }; ?></h4></div>
+    <form action="manage_cpa.php" method="post">
 
-  <div class="form-group">
-    <label for="campaign_id">Campaign</label>
-    <select name="campaign_id" id="campaign_id" class="form-control selectpicker" tittle="Select..." required >  
-          <option value="0">Choose Campaign</option>
-               <?php           
-               for ($i=0; $i < $num_rows; $i++){            
-               echo "<option value=" . $dataArrayTotal[$i][0] . ">". $dataArrayTotal[$i][1] . "-". $dataArrayTotal[$i][2] . "-". $dataArrayTotal[$i][3]."-". $dataArrayTotal[$i][4]."-". $dataArrayTotal[$i][5] ."</option>";
-               }
-               ?>              
-                           </select>
-      
+    <div class="form-group">
+      <label for="campaign_id">Campaign</label>
+      <select name="campaign_id" id="campaign_id" class="form-control selectpicker" tittle="Select..." required >  
+            <option value="0">Choose Campaign</option>
+                 <?php           
+                 for ($i=0; $i < $num_rows; $i++){            
+                 echo "<option value=" . $dataArrayTotal[$i][0] . ">". $dataArrayTotal[$i][1] . "-". $dataArrayTotal[$i][2] . "-". $dataArrayTotal[$i][3]."-". $dataArrayTotal[$i][4]."-". $dataArrayTotal[$i][5] ."</option>";
+                 }
+                 ?>              
+                             </select>
+        
+    </div>
+    <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+    <button type="button" id="new_cpa" name="new_cpa" class="btn btn-success" style="float: right;" data-toggle="modal" data-target="#myModal">New CPA</button>
+  </form>
   </div>
-  <button type="submit" name="submit" class="btn btn-primary">Submit</button>
-  <button type="button" id="new_cpa" name="new_cpa" class="btn btn-success" style="float: right;" data-toggle="modal" data-target="#myModal">New CPA</button>
-</form>
-</div>
-<div class="col-md-4"></div>
 
-</div>
+
+
 <div class="col-md-12">
            <div class="container">  
                 <br />  
@@ -171,19 +176,24 @@ if($count == 0){
 
  <script>  
  $(document).ready(function(){  
-      $('#employee_data').DataTable();  
+      $('#employee_data').DataTable({
+        searching: false
+      });  
       $('#exampleSelect1').selectpicker();
       $('#campaign_id').val("<?php echo $_POST['campaign_id'];?>");
 
+      //$('#mcpa').addClass("active");
+
  });  
  $('#new_cpa').click(function () {
-    
     var array = $('#campaign_id option:selected').text().split('-');
     var keyword = array[3];
     var adminsitename = array[2];
     $('#varKywrd').val(keyword);
     $('#varAdminSite').val(adminsitename);
     $('#varCampId').val($('#campaign_id').val());
+
+
  });
 
  

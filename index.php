@@ -2,6 +2,8 @@
 <html lang="en">
 
 	<?php /// INCLUDE STYLE, HEAD, NAVBAR, <body>
+	session_start();
+	
 include 'head_navbar.php';
 include 'side_bar.php';
 ?>

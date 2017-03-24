@@ -43,9 +43,24 @@
             <div id="navbar" class="collapse navbar-collapse">
                <ul class="nav navbar-nav">
                   <li class="active"><a href="/ARPU_TEST/">Reports</a></li>
-                  <li><a href="#about">About</a></li>
+                  <li><a href="../manage_cpa.php">Manage CPA</a></li>
                   <li><a href="#contact">Contact</a></li>
                </ul>
+               <ul class="nav navbar-nav pull-right">
+                  <li><a href="<?php 
+                     if(!isset($_SESSION['logg']) || $_SESSION['logg'] == false){
+                        echo '../login.php';
+                     } else {
+                        echo '../logout.php';
+                     }
+                  ?>"><?php 
+                     if(!isset($_SESSION['logg']) || $_SESSION['logg'] == false){
+                        echo 'Login';
+                     } else {
+                        echo "Logout";
+                     }
+                  ?></a></li>
+              </ul>
             </div>
             <!--/.nav-collapse -->
          </div>
