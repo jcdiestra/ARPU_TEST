@@ -14,11 +14,16 @@ $output = '';
 $querys='';
 $insert='';
 $rsp='';
+$searchq='';
 //collect
+
+
 
 if(isset($_POST['submit'])){
   $searchq = $_POST['campaign_id'];
-  $querys= mysql_query("SELECT * FROM cpa_weekly where campaignid =$searchq") or die("no se pudo conectar");
+  $querys= mysql_query("SELECT w.id, w.campaignid, w.week_date, w.keyword, w.adminsitename, c.campaign_type, w.cpa FROM cpa_weekly w
+join campaign c on w.campaignid= c.campaignid 
+where w.campaignid =".$searchq) or die("no se pudo conectar");
 }
 
 if ($querys)
@@ -31,7 +36,8 @@ if($count == 0){
     $output.='<tr>  
                 <td>'.$linea["week_date"].'</td>  
                 <td>'.$linea["keyword"].'</td>  
-                <td>'.$linea["adminsitename"].'</td>  
+                <td>'.$linea["adminsitename"].'</td> 
+                <td>'.$linea["campaign_type"].'</td> 
                 <td>'.$linea["cpa"].'</td>  
               </tr> ';
   }
@@ -40,6 +46,7 @@ if($count == 0){
 }
 
 if(isset($_POST['submit2'])){
+  $searchq = $_POST['varCampId'];
   $varAdminSite = $_POST['varAdminSite'];
   $varKywrd = $_POST['varKywrd'];
   $week = $_POST['week'];
@@ -80,21 +87,21 @@ if($count == 0){
       echo '<h4>';
       break;
   }; ?></h4></div>
-    <form action="manage_cpa.php" method="post">
+    <form id="buscarCPA" action="manage_cpa.php" method="post">
 
     <div class="form-group">
       <label for="campaign_id">Campaign</label>
-      <select name="campaign_id" id="campaign_id" class="form-control selectpicker" tittle="Select..." required >  
+      <select name="campaign_id" id="campaign_id" class="form-control selectpicker" data-live-search="true" tittle="Select..." required >  
             <option value="0">Choose Campaign</option>
                  <?php           
                  for ($i=0; $i < $num_rows; $i++){            
-                 echo "<option value=" . $dataArrayTotal[$i][0] . ">". $dataArrayTotal[$i][1] . "-". $dataArrayTotal[$i][2] . "-". $dataArrayTotal[$i][3]."-". $dataArrayTotal[$i][4]."-". $dataArrayTotal[$i][5] ."</option>";
+                 echo "<option value=" . $dataArrayTotal[$i][0] . ">". $dataArrayTotal[$i][1] . " | ". $dataArrayTotal[$i][2] . " | ". $dataArrayTotal[$i][3]." | ". $dataArrayTotal[$i][4]." | ". $dataArrayTotal[$i][5] ."</option>";
                  }
                  ?>              
                              </select>
         
     </div>
-    <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" id="btn_buscar"name="submit" class="btn btn-primary">Submit</button>
     <button type="button" id="new_cpa" name="new_cpa" class="btn btn-success" style="float: right;" data-toggle="modal" data-target="#myModal">New CPA</button>
   </form>
   </div>
@@ -111,6 +118,7 @@ if($count == 0){
                                     <td>Week Date</td>  
                                     <td>Keyword</td>  
                                     <td>Admin Site Name</td>  
+                                    <td>Campaign Type</td>  
                                     <td>CPA</td>  
                                </tr>  
                           </thead>  
@@ -140,6 +148,13 @@ if($count == 0){
          <div class="form-group">
           <label for="week">Week</label>
           <select name="week" id="week" class="form-control selectpicker"  data-live-search="true" required >           
+            <option value="2017-02-06">2017-02-06</option>
+            <option value="2017-02-13">2017-02-13</option>
+            <option value="2017-02-20">2017-02-20</option>
+            <option value="2017-02-27">2017-02-27</option>
+            <option value="2017-03-06">2017-03-06</option>
+            <option value="2017-03-13">2017-03-13</option>
+            <option value="2017-03-20">2017-03-20</option>
             <option value="2017-03-27">2017-03-27</option>
             <option value="2017-04-03">2017-04-03</option>
             <option value="2017-04-10">2017-04-10</option>
@@ -151,7 +166,7 @@ if($count == 0){
 
          <div class="form-group">
           <label for="cpa_weekly">CPA Weekly</label>
-          <input class="form-control" type="text" name="cpa_weekly">
+          <input class="form-control" type="text" name="cpa_weekly" required>
             
         </div>
 
@@ -177,25 +192,26 @@ if($count == 0){
  <script>  
  $(document).ready(function(){  
       $('#employee_data').DataTable({
-        searching: false
+        searching: false,
+        order: [[ 0, "desc" ]]
       });  
       $('#exampleSelect1').selectpicker();
-      $('#campaign_id').val("<?php echo $_POST['campaign_id'];?>");
+
+      $('#campaign_id').val("<?php echo $searchq ?>");
 
       //$('#mcpa').addClass("active");
 
  });  
  $('#new_cpa').click(function () {
-    var array = $('#campaign_id option:selected').text().split('-');
+    var array = $('#campaign_id option:selected').text().split(' | ');
     var keyword = array[3];
     var adminsitename = array[2];
     $('#varKywrd').val(keyword);
     $('#varAdminSite').val(adminsitename);
     $('#varCampId').val($('#campaign_id').val());
 
-
  });
-
+  
  
  </script>  
       </body>  
